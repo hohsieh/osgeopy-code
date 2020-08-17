@@ -34,7 +34,6 @@ print(n == 15)
 ###############################  2.4 Data types  ##############################
 
 #################### 2.4.1 Booleans
-
 print(True or False)
 print(not False)
 print(True and False)
@@ -77,6 +76,7 @@ print(s)
 # Formatting strings using indexes in the placeholders
 print('I wish I were as smart as {0} {1}'.format('Albert', 'Einstein'))
 print('I wish I were as smart as {1}, {0}'.format('Albert', 'Einstein'))
+print('There is a lot of {0} stuff in {0}'.format("NYC"))
 
 # Escape characters (\t means tab, \n means newline)
 print('Title:\tMoby Dick\nAuthor:\tHerman Melville')
