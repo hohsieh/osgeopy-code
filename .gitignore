@@ -56,5 +56,5 @@ docs/_build/
 
 *.zip
 
-/Users/ho/Documents/GitHub/osgeopy-code/osgeopy-data/
-/osgeopy-data/
+/osgeopy-data
+osgeopy-data/
