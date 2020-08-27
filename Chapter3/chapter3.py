@@ -10,7 +10,7 @@
 # prefer.
 import os
 import sys
-data_dir = r'D:\osgeopy-data'
+data_dir = r'/Users/ho/Documents/GitHub/osgeopy-code/osgeopy-data/osgeopy-data'
 # data_dir =
 
 
@@ -30,6 +30,9 @@ print(driver)
 
 # This does not work because the real name is 'Esri shapefile'.
 driver = ogr.GetDriverByName('shapefile')
+print(driver)
+
+driver = ogr.GetDriverByName('Esri shapefile')
 print(driver)
 
 # Print out a list of drivers.
@@ -183,6 +186,7 @@ ds = driver.CreateDataSource(os.path.join(data_dir, 'output', 'earth.sqlite'),
 
 # Delete a data source if it exists instead of trying to overwrite it.
 if os.path.exists(json_fn):
+    # use driver to delete existing ds to ensure all required files are deleted
     json_driver.DeleteDataSource(json_fn)
 json_ds = json_driver.CreateDataSource(json_fn)
 if json_ds is None:
