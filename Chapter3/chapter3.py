@@ -282,12 +282,33 @@ for in_feat in in_lyr:
     out_feat.SetField('Y_short', pt.GetY())
     out_lyr.CreateFeature(out_feat)
 
-
+# pb.print_attributes(in_lyr)
+# pb.print_attributes(out_lyr)
 
 ########################  3.6 Updating existing data  #########################
 
+# # Set things up for the following examples.
+# original_fn = os.path.join(data_dir, 'Washington', 'large_cities.shp')
+# new_fn = os.path.join(data_dir, 'output', 'large_cities2.shp')
+
+# # First make a copy of a shapefile so you have something to test things on.
+# pb.copy_datasource(original_fn, new_fn)
+
+# # Open the copied shapefile for writing.
+# ds = ogr.Open(new_fn, 1)
+# if ds is None:
+#     sys.exit('Could not open {0}.'.format(new_fn))
+# lyr = ds.GetLayer(0)
+
+# # Take a look at the attributes before you change anything.
+# print('Original attributes')
+# pb.print_attributes(lyr, geom=False)
+# pb.print_attributes(lyr)
+
+########################  (Ho Hsieh) 3.6 Updating existing data  #########################
+
 # Set things up for the following examples.
-original_fn = os.path.join(data_dir, 'Washington', 'large_cities.shp')
+original_fn = out_fn
 new_fn = os.path.join(data_dir, 'output', 'large_cities2.shp')
 
 # First make a copy of a shapefile so you have something to test things on.
@@ -303,7 +324,6 @@ lyr = ds.GetLayer(0)
 print('Original attributes')
 pb.print_attributes(lyr, geom=False)
 
-
 ####################  3.6.1 Changing the layer definition  ####################
 
 # Change the name of the "Name" attribute field by creating a new field
@@ -316,7 +336,7 @@ lyr.AlterFieldDefn(i, fld_defn, ogr.ALTER_NAME_FLAG)
 # decimal places. Need to make sure that the width is big enough or things
 # don't work right, so set it to the original width to be safe.
 lyr_defn = lyr.GetLayerDefn()
-i = lyr_defn.GetFieldIndex('X')
+i = lyr_defn.GetFieldIndex('X_default')
 width = lyr_defn.GetFieldDefn(i).GetWidth()
 fld_defn = ogr.FieldDefn('X_coord', ogr.OFTReal)
 fld_defn.SetWidth(width)
@@ -355,11 +375,11 @@ for feat in lyr:
     feat.SetField('ID', n)
     lyr.SetFeature(feat)
     n += 1
-print('\nID has been added and precision has taken effect')
+print('\nID has been added and precision has taken effect') # @HO why take effect now?
 pb.print_attributes(lyr, geom=False)
 
 # Delete Seattle. Notice that although it doesn't print the record for Seattle,
-# it still thinks there are 14 features.
+# it still thinks there are 14 features. #@HO only for some formats
 lyr.ResetReading()
 for feat in lyr:
     if feat.GetField('City_Name') == 'Seattle':
@@ -368,7 +388,8 @@ print('\nSeattle deleted')
 pb.print_attributes(lyr, geom=False)
 
 # Pack the database in order to get rid of that ghost feature, and recompute
-# the spatial extent.
+# the spatial extent. 
+# code below are for shapefile
 ds.ExecuteSQL('REPACK ' + lyr.GetName())
 ds.ExecuteSQL('RECOMPUTE EXTENT ON ' + lyr.GetName())
 print('\nDatabase packed')
